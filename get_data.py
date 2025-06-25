@@ -25,18 +25,20 @@ with open("texas_aggie_batch_data.csv", 'r') as og_data:
             pages = sum(
                 os.path.isfile(os.path.join(dir_path, f)) for f in os.listdir(dir_path)
             )
+            date = row.get('Date published')
+            if len(date.split('-')) < 3:
+                date = f"{date}-01"
             item = {
                 "item": f"texasaggie_{row.get('Date published')}",
                 "title": f"Texas Aggie. Vol. {volume}, No.{issue}",
                 "description": f"The {row.get('Date published')} issue (Vol. {volume}, No. {issue}) of the Texas Aggie.; {pages} pages",
-                "date": row.get('Date published'),
+                "date": date,
                 "volume": volume,
                 "issue": issue,
                 "edition": "1",
                 "pages": pages,
                 "ONI-ChronAm_Batch": batch_title
             }
-            print(item)
             new_data.append(item)
 
 with open(final_csv_name, 'w') as new_sheet:
