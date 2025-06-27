@@ -3,9 +3,9 @@ from csv import DictReader, DictWriter
 
 # Batch Information
 path_to_texas_aggie_files = "/Volumes/digital_project_management/Texas Aggie"
-batch_folder = "Batch 3 Scans"
-final_csv_name = "texas_aggie_batch_data_new_3.csv"
-batch_title = "texas_aggie_batch_3"
+batch_folder = "Batch 4 Scans"
+final_csv_name = "texas_aggie_batch_data_new_4.csv"
+batch_title = "texas_aggie_batch_4"
 
 
 all_directories = []
@@ -18,6 +18,7 @@ with open("texas_aggie_batch_data.csv", 'r') as og_data:
     reader = DictReader(og_data)
     for row in reader:
         current_id = f"texasaggie_{row.get('Date published')}"
+        print(current_id)
         if current_id in all_directories:
             volume = row.get('Enumeration').split(':')[0].split('.')[-1]
             issue = row.get('Enumeration').split(':')[1].split('.')[-1]
@@ -29,9 +30,9 @@ with open("texas_aggie_batch_data.csv", 'r') as og_data:
             if len(date.split('-')) < 3:
                 date = f"{date}-01"
             item = {
-                "item": f"texasaggie_{row.get('Date published')}",
+                "item": f"texasaggie_{date}",
                 "title": f"Texas Aggie. Vol. {volume}, No.{issue}",
-                "description": f"The {row.get('Date published')} issue (Vol. {volume}, No. {issue}) of the Texas Aggie.; {pages} pages",
+                "description": f"The {date} issue (Vol. {volume}, No. {issue}) of the Texas Aggie.; {pages} pages",
                 "date": date,
                 "volume": volume,
                 "issue": issue,
@@ -40,6 +41,8 @@ with open("texas_aggie_batch_data.csv", 'r') as og_data:
                 "ONI-ChronAm_Batch": batch_title
             }
             new_data.append(item)
+        else:
+            print('no')
 
 with open(final_csv_name, 'w') as new_sheet:
     writer = DictWriter(new_sheet, fieldnames=new_data[0].keys())
